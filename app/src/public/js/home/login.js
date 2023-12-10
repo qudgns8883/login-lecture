@@ -14,5 +14,12 @@ const id = document.querySelector("#id"),
      id: id.value,
     psword: psword.value,
    };
-   console.log(req);
+
+   fatch("/login",{
+    method: "POST",
+    Headers: {
+         "Content-Type": "application/json",
+    },
+     body: JSON.stringify(req),
+   });
    }
