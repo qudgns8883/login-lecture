@@ -15,11 +15,13 @@ const id = document.querySelector("#id"),
     psword: psword.value,
    };
 
-   fatch("/login",{
+   fetch("/login", {
     method: "POST",
-    Headers: {
+    headers: {
          "Content-Type": "application/json",
     },
      body: JSON.stringify(req),
-   });
+   })
+   .then((res) => res.json())
+   .then(console.log);
    }
