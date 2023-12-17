@@ -10,6 +10,9 @@ const output = {
     login: (req, res) =>{
         res.render("home/login");
     },
+    register: (req, res) =>{
+        res.render("home/register");
+    }
 };
 //해당 페이지를 랜더링 ,오브젝트여서 ; , index.js
 
