@@ -7,9 +7,12 @@ constructor(body) {
     this.body = body;
 }   
 
-login() {
+ async login() {
     const client = this.body;
-    const {id , psword } = UserStorage.getUserInfo(client.id);
+    const { id, psword } = await UserStorage.getUserInfo(client.id);  
+
+    //pending이유 userInfo가 반환하기전에 실행돼서 await / async 비동기함수로
+    //await는 promises를 반환하는 변수한테 주는 옵션 
 
     if (id) { 
         if (id === client.id && psword === client.psword) {
@@ -19,7 +22,7 @@ login() {
         }
     return { success: false, msg: "존재하지 않는 아이디입니다."};
     }
-    register() {
+ register() {
         const client = this.body;
         const response = UserStorage.save(client);
         return response

@@ -1,47 +1,53 @@
 "use strict"
+  //로그인 검증
   
-//로그인 검증
+const fs = require("fs").promises;
 
 class UserStorage {
-    static #users = {         
-        //다이렉트로 users를 받아올려면 정적변수 static 사용
-        //퍼블릭에서 프리메이트변수로 선언 # > 외부에서 불러올 수 없도록    
-     id: ["qudgns8883", "병훈", "예삐삐"],
-     psword: ["1234", "1234", "12341234"],
-     name: ["qudgns8883", "병훈", "예삐삐"],
-    };
+   static #getUserInfo(data, id){
+      const users = JSON.parse(data);    //user.json데이터를 받아서 json으로 읽음 
+          const idx = users.id.indexOf(id);
+          const usersKeys = Object.keys(users);    //users의 키값만 usersKeys에 리스트로 => [id,psword]
+          const userInfo = usersKeys.reduce((newUser, info) =>{ //키값이 순차적으로 들어감
+           newUser[info] = users[info][idx];
+           return newUser; 
+           }, {});
+   
+           return userInfo;
+   }
+    
     //로그인 데이터
-    static getUsers(...fields) {       
+ static getUsers(...fields) {       
         //클래스 자체에서 메소드로 접근할려면 static
         //...변수명 입력하면 파라미터로 넘어온 데이터들이 배열형태로 넘어감
-        const users = this.#users;
-        const newUsers = fields.reduce((newUsers, field) =>{   
+        // const users = this.#users;
+     const newUsers = fields.reduce((newUsers, field) =>{   
             //reduce메서드로 필드에 담긴 내용만 담기도록, 
             //UserStorage.getUsers("id", "psword"); 필드에 담긴 원소가 순환하도록
             //newUsers에는 초기값 그 다음 변수는 field에 나타남
-            if(users.hasOwnProperty(field)){    //users에 선언한 키가 있는지 확인 
-                newUsers[field] = users[field];  //키와 값이 맞으면 리턴
-            }
-            return newUsers; //필드에 맞는 키와 값이 다 나오게 함
-        }, {}); //  ture면 > {} 에 값을 넣어줌
-        return newUsers;
-    }
+        if(users.hasOwnProperty(field)){    //users에 선언한 키가 있는지 확인 
+           newUsers[field] = users[field];  //키와 값이 맞으면 리턴
+        }
+        return newUsers; //필드에 맞는 키와 값이 다 나오게 함
+     }, {}); //  ture면 > {} 에 값을 넣어줌
+     return newUsers;
+ }
 
 
  static getUserInfo(id) {
-    const users = this.#users;
-    const idx = users.id.indexOf(id);
-    const usersKeys = Object.keys(users);    //users의 키값만 usersKeys에 리스트로 => [id,psword]
-    const userInfo = usersKeys.reduce((newUser, info) =>{ //키값이 순차적으로 들어감
-        newUser[info] = users[info][idx];
-        return newUser; 
-    }, {});
+    return fs
+    .readFile("./src/databases/users.json") //promises를 반환함
+    .then((data) => {                      //로직이 성공시 data 실행
+       return this.#getUserInfo(data, id);
+     })        
+     
+     .catch(console.error);          //로직이 실패시 err 실행 ,promises를 반환하는 오류처리는 catch로
+  };
+    
 
-    return userInfo;
-}
 
 static save(userInfo){
-    const users = this.#users;
+    // const users = this.#users;
     users.id.push(userInfo.id);
     users.name.push(userInfo.name);
     users.psword.push(userInfo.psword);

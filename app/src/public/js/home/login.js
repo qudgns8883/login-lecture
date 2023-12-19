@@ -2,17 +2,17 @@
 //html문서와 연결된 자바스크립트 파일 , 프론트단에서 동작하는
 
 const id = document.querySelector("#id"),          
-  psword = document.querySelector("#psword"),      
-  loginBtn = document.querySelector("#button");     
+psword = document.querySelector("#psword"),      
+loginBtn = document.querySelector("#button");     
    //html의 선택자를 통해 값을 변수에 넣음 , login.ejs의 태그에 대한 정보
    //id로 부여된 선택자를 가지고 올 수 있게 앞에 #을 붙임
    //선택자의 값을 가지고 오기전에 콘솔이 먼저 실행돼서 ,defer명령어로 추가된 문서 순서로
 
 
-  loginBtn.addEventListener("click", login);
+loginBtn.addEventListener("click", login);
   //클릭이벤트가 발생하면 로그인
 
-   function login() {     
+  function login() {     
    const req = {
      id: id.value,
     psword: psword.value,
